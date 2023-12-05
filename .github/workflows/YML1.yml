@@ -24,7 +24,7 @@ jobs:
       - name: Generate HTML Report
         run: |
           pytest --html=report.html --self-contained-html 
-          continue-on-error: true
+        continue-on-error: true
 
       - name: Upload Test Report
         if: success()
