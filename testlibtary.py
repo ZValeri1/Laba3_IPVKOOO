@@ -1,51 +1,63 @@
-import pytest
-from contextlib import nullcontext as does_not_raise
 
-from main import LibraryFunction
+import numpy as np
 
 
-class TestLibraryFunction:
+class LibraryFunction:
 
-    # Функция, тестирующая метод fibonacci
-    @pytest.mark.parametrize(
-        "n, array_fib, expectation",
-        [
-            (10, [1, 1, 2, 3, 5, 8, 13, 21, 34, 55], does_not_raise()),
-            (0, [1, 1, 2, 3, 5, 8, 13, 21, 34, 55], pytest.raises(Exception)),
-            (-5, [1, 1, 2, 3, 5, 8, 13, 21, 34, 55], pytest.raises(Exception)),
-            ("ad", [1, 1, 2, 3, 5, 8, 13, 21, 34, 55], pytest.raises(TypeError))
-        ]
-    )
-    def test_fibonacci(self, n, array_fib, expectation):
-        with expectation:
-            assert (LibraryFunction().fibonacci(n), array_fib)
+    # Фибоначчи
+    def fibonacci(self, n):
+        # Проверка на длину последовательности
+        if n <= 0:
+            raise Exception("Длина последовательности должна быть больше 0")
+        if isinstance(n, str):
+            raise TypeError("Тип данных должен быть числовой")
 
-    # Функция, тестирующая метод bubble
-    @pytest.mark.parametrize(
-        "array, sorted_array, expectation",
-        [
-            ([1, 0, 6, 12, 9, 14, 93, 54, 21, 8], [0, 1, 6, 8, 9, 12, 14, 21, 54, 93], does_not_raise()),
-            (["a", "ads", "asdd", "asd", "adasd", "adsd"], [1, 2, 3, 4, 5], pytest.raises(TypeError))
-        ]
-    )
-    def test_bubble(self, array, sorted_array, expectation):
-        with expectation:
-            assert LibraryFunction().bubble(array) == sorted_array
+        fib_sequence = np.array([])
+        for x in range(1, n + 1):
+            fib_sequence = np.append(fib_sequence, self.fib(x))
 
-    # Функция, тестирующая метод calculator
-    @pytest.mark.parametrize(
-        "first_number, second_number, operation, result, expectation",
-        [
-            (210, 210, '+', 420, does_not_raise()),
-            (100, 31, '-', 69, does_not_raise()),
-            (50, 6, '*', 300, does_not_raise()),
-            (7, 2, '/', 3.5, does_not_raise()),
-            ("frf", 3, '/', 4.2, pytest.raises(TypeError)),
-            (1, "frf", '+', 96, pytest.raises(TypeError)),
-            (6, 9, 'p', 3, pytest.raises(TypeError))
-        ]
-    )
-    def test_calculator(self, first_number, second_number, operation, result, expectation):
-        with expectation:
-            assert LibraryFunction().calculator(first_number, second_number, operation) == result
+        return fib_sequence
 
+    # Рекуррентная функция Фибоначчи
+    def fib(self, x):
+        if x < 2:
+            return 1
+        return self.fib(x - 2) + self.fib(x - 1)
+
+    # Сортировка пузырьком
+    def bubble(self, numbers):
+        # Проверка на тип данных в массиве
+        for i in numbers:
+            if isinstance(i, str):
+                raise TypeError("Тип данных в массиве должен быть числовой")
+
+        # Сортировка пузырьком
+        for i in range(len(numbers) - 1):
+            for j in range(len(numbers) - 1 - i):
+                if numbers[j] > numbers[j + 1]:
+                    numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]
+
+        return numbers
+
+    # Калькулятор
+    def calculator(self, first_number, second_number, operation):
+        # Проверка на тип данных
+        if isinstance(first_number, str) or isinstance(second_number, str) == str:
+            raise TypeError("Тип данных должен быть числовой")
+        # Проверка на тип операции
+        approve_operation = ['+', '-', '*', '/']
+        count = 0
+        for i in approve_operation:
+            if operation.__eq__(i):
+                count += 1
+        if count == 0:
+            raise TypeError("Разрешены только операции '+', '-', '*', '/'")
+
+        if operation == '+':
+            return first_number + second_number
+        if operation == '-':
+            return first_number - second_number
+        if operation == '*':
+            return first_number * second_number
+        if operation == '/':
+            return first_number / second_number
