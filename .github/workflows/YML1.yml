@@ -2,28 +2,29 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [master]
-  workflow_dispatch:
+    branches: [master] # Запуск workflow при пуше в ветку master
+  workflow_dispatch:  # Возможность ручного запуска workflow
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: windows-latest # Выполнение на операционной системе Windows
+
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Repository  # Шаг для проверки репозитория
         uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Set up Python # Установка версии Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
 
-      - name: Install Dependencies
+      - name: Install Dependencies  # Установка зависимостей
         run: |
           pip install -r requirements.txt
 
       - name: Generate HTML Report
         run: |
-          pytest --html=report.html --self-contained-html 
+          pytest --html=report.html --self-contained-html
         continue-on-error: true
 
       - name: Upload Test Report
