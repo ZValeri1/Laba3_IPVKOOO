@@ -5,10 +5,10 @@ import numpy as np
 class LibraryFunction:
 
     # Фибоначчи
-    def fibonacci(self, n):
+    def method_fibonacci(self, n):
         # Проверка на длину последовательности
         if n <= 0:
-            raise Exception("Длина последовательности должна быть больше 0")
+            raise Exception("Длина последовательности не может быть меньше или равно 0")
         if isinstance(n, str):
             raise TypeError("Тип данных должен быть числовой")
 
@@ -18,7 +18,7 @@ class LibraryFunction:
 
         return fib_sequence
 
-    # Рекуррентная функция Фибоначчи
+
     def fib(self, x):
         if x < 2:
             return 1
@@ -29,7 +29,7 @@ class LibraryFunction:
         # Проверка на тип данных в массиве
         for i in numbers:
             if isinstance(i, str):
-                raise TypeError("Тип данных в массиве должен быть числовой")
+                raise TypeError("Тип данных в массиве не может быть строкой")
 
         # Сортировка пузырьком
         for i in range(len(numbers) - 1):
@@ -42,17 +42,15 @@ class LibraryFunction:
     # Калькулятор
     def calculator(self, first_number, second_number, operation):
         # Проверка на тип данных
-        if isinstance(first_number, str) or isinstance(second_number, str) == str:
-            raise TypeError("Тип данных должен быть числовой")
+        if not (isinstance(first_number, (int, float)) and isinstance(second_number, (int, float))):
+            raise TypeError("Тип данных должен быть числом")
+
         # Проверка на тип операции
         approve_operation = ['+', '-', '*', '/']
-        count = 0
-        for i in approve_operation:
-            if operation.__eq__(i):
-                count += 1
-        if count == 0:
-            raise TypeError("Разрешены только операции '+', '-', '*', '/'")
+        if operation not in approve_operation:
+            raise ValueError("Разрешены только операции '+', '-', '*', '/'")
 
+        # Выполнение математической операции
         if operation == '+':
             return first_number + second_number
         if operation == '-':
@@ -60,4 +58,6 @@ class LibraryFunction:
         if operation == '*':
             return first_number * second_number
         if operation == '/':
+            if second_number == 0:
+                raise ValueError("Деление на ноль недопустимо")
             return first_number / second_number

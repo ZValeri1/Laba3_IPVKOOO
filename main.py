@@ -18,14 +18,14 @@ class TestLibraryFunction:
     )
     def test_fibonacci(self, n, array_fib, expectation):
         with expectation:
-            assert (LibraryFunction().fibonacci(n), array_fib)
+            assert (LibraryFunction().method_fibonacci(n), array_fib)
 
     # Функция, тестирующая метод bubble
     @pytest.mark.parametrize(
         "array, sorted_array, expectation",
         [
             ([1, 0, 6, 12, 9, 14, 93, 54, 21, 8], [0, 1, 6, 8, 9, 12, 14, 21, 54, 93], does_not_raise()),
-            (["a", "ads", "asdd", "asd", "adasd", "adsd"], [1, 2, 3, 4, 5], pytest.raises(TypeError))
+            (["z", "gg", "tt", "bb", "gh", "agg"], [1, 2, 3, 4, 5], pytest.raises(TypeError))
         ]
     )
     def test_bubble(self, array, sorted_array, expectation):
@@ -36,13 +36,13 @@ class TestLibraryFunction:
     @pytest.mark.parametrize(
         "first_number, second_number, operation, result, expectation",
         [
-            (210, 210, '+', 420, does_not_raise()),
-            (100, 31, '-', 69, does_not_raise()),
+            (100, 10, '+', 110, does_not_raise()),
+            (100, 50, '-', 50, does_not_raise()),
             (50, 6, '*', 300, does_not_raise()),
-            (7, 2, '/', 3.5, does_not_raise()),
-            ("frf", 3, '/', 4.2, pytest.raises(TypeError)),
-            (1, "frf", '+', 96, pytest.raises(TypeError)),
-            (6, 9, 'p', 3, pytest.raises(TypeError))
+            (10, 2, '/', 5, does_not_raise()),
+            ("z", 2, '/', 5, pytest.raises(TypeError)),
+            (1, "g", '+', 100, pytest.raises(TypeError)),
+            (10, 5, 'o', 5, pytest.raises(ValueError))
         ]
     )
     def test_calculator(self, first_number, second_number, operation, result, expectation):
